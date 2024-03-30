@@ -362,8 +362,8 @@ var definePinchZoom = function () {
          * @param center
          */
         scale: function (scale, center) {
+            scale = this.scaleZoomFactor(scale);
             if (this.options.enableZoomFunctionality) {
-                scale = this.scaleZoomFactor(scale);
                 this.addOffset({
                     x: (scale - 1) * (center.x + this.offset.x),
                     y: (scale - 1) * (center.y + this.offset.y)

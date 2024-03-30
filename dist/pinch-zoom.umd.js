@@ -379,8 +379,8 @@
              * @param center
              */
             scale: function scale(_scale, center) {
+                _scale = this.scaleZoomFactor(_scale);
                 if (this.options.enableZoomFunctionality) {
-                    _scale = this.scaleZoomFactor(_scale);
                     this.addOffset({
                         x: (_scale - 1) * (center.x + this.offset.x),
                         y: (_scale - 1) * (center.y + this.offset.y)
