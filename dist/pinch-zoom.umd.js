@@ -118,6 +118,12 @@
                 y: 0
             };
             this.options = Object.assign({}, this.defaults, options);
+
+            // If zooming and dragging is disabled, never update CSS
+            if (!this.options.enableZoomFunctionality && !this.options.enableDragFunctionality) {
+                this.skipCSS = true;
+            }
+
             this.setupMarkup();
             this.bindEvents();
             this.update();
@@ -755,7 +761,7 @@
                     this.setupOffsets();
                 }
 
-                if (this.updatePlanned) {
+                if (this.updatePlanned || this.skipCSS) {
                     return;
                 }
                 this.updatePlanned = true;
