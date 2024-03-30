@@ -121,6 +121,8 @@ var definePinchZoom = function () {
     PinchZoom.prototype = {
 
         defaults: {
+            enableZoomFunctionality: true,
+            enableDragFunctionality: true,
             tapZoomFactor: 2,
             zoomOutFactor: 1.3,
             animationDuration: 300,
@@ -275,7 +277,7 @@ var definePinchZoom = function () {
 
             this.lastScale = newScale;
             this.update()
-            
+
             triggerEvent(this.el, this.options.mouseWheelEventName);
             if (typeof this.options.onMouseWheel == "function") {
             this.options.onMouseWheel(this, event);
@@ -360,11 +362,14 @@ var definePinchZoom = function () {
          * @param center
          */
         scale: function (scale, center) {
-            scale = this.scaleZoomFactor(scale);
-            this.addOffset({
-                x: (scale - 1) * (center.x + this.offset.x),
-                y: (scale - 1) * (center.y + this.offset.y)
-            });
+            if (this.options.enableZoomFunctionality) {
+                scale = this.scaleZoomFactor(scale);
+                this.addOffset({
+                    x: (scale - 1) * (center.x + this.offset.x),
+                    y: (scale - 1) * (center.y + this.offset.y)
+                });
+            }
+
             triggerEvent(this.el, this.options.zoomUpdateEventName);
             if(typeof this.options.onZoomUpdate == "function"){
                 this.options.onZoomUpdate(this, event)
@@ -402,7 +407,7 @@ var definePinchZoom = function () {
          */
         drag: function (center, lastCenter) {
             if (lastCenter) {
-              if(this.options.lockDragAxis) {
+              if(this.options.lockDragAxis && this.options.enableDragFunctionality) {
                 // lock scroll to position that was changed the most
                 if(Math.abs(center.x - lastCenter.x) > Math.abs(center.y - lastCenter.y)) {
                   this.addOffset({
@@ -417,7 +422,7 @@ var definePinchZoom = function () {
                   });
                 }
               }
-              else {
+              else if (this.options.enableDragFunctionality) {
                 this.addOffset({
                   y: -(center.y - lastCenter.y),
                   x: -(center.x - lastCenter.x)
@@ -592,7 +597,7 @@ var definePinchZoom = function () {
                 };
             });
         },
-        
+
         /**
          * Returns the pointer of an event relative to the container offset
          * @param event
@@ -976,14 +981,14 @@ var definePinchZoom = function () {
                     target.handleMouseWheel(event);
                 }
             });
-            
+
             el.addEventListener("mousedown", function (event) {
                 if(target.enabled) {
                     firstMove = true;
                     fingers = 1;
                 }
             }, { passive: true });
-            
+
             el.addEventListener('mousemove', function (event) {
                 if(target.enabled) {
                     if (firstMove) {

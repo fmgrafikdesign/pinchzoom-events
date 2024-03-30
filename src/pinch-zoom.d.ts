@@ -1,6 +1,8 @@
 type PinchZoomEventHandler = (target: PinchZoom, event: TouchEvent) => void;
 
 declare interface IPinchZoomOptions {
+    enableZoomFunctionality?: boolean;
+    enableDragFunctionality?: boolean;
     tapZoomFactor?: number;
     zoomOutFactor?: number;
     animationDuration?: number;
