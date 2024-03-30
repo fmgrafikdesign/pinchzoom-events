@@ -963,7 +963,10 @@ var definePinchZoom = function () {
                             break;
                     }
                     if (interaction) {
-                        cancelEvent(event);
+                        // Only cancel events for zoom since we implement our own dragging
+                        if (interaction === 'zoom') {
+                            cancelEvent(event);
+                        }
                         target.update();
                     }
                 }
