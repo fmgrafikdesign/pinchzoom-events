@@ -32,7 +32,6 @@
     "babel-preset-env": "~1.6.1"
   },
   "scripts": {
-    "build": "script/build.sh",
     "prepublish": "npm run build"
   }
 }
